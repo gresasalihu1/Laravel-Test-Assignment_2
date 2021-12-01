@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Comment\Comment;
 use App\Models\Post\Post;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model
+class User  extends Authenticatable
 {
     use HasFactory, HasApiTokens, UserAttribute;
 

@@ -5,17 +5,19 @@ namespace App\Http\Controllers\Like;
 use Illuminate\Http\Request;
 use App\Models\Like\Like;
 use App\Http\Controllers\Controller;
+use App\Models\Post\Post;
+use App\Models\Comment\Comment;
 
 class LikeController extends Controller
 {
-    public function likePost($id)
+    public function likePost(Post $post)
     {
-        $this->handleLike('App\Models\Post\Post', $id);
+        return $this->handleLike($post, $post->id);
     }
 
-    public function likeComment($id)
+    public function likeComment(Comment $comment)
     {
-        $this->handleLike('App\Models\Comment\Comment', $id);
+        return $this->handleLike($comment, $comment->id);
     }
 
     public function handleLike($type, $id)
@@ -29,14 +31,14 @@ class LikeController extends Controller
                 'likeable_id'   => $id,
                 'likeable_type' => $type,
             ]);
-            echo "You like this ";
+            return $this->success('You like this');
         } else {
             if (is_null($existing_like->deleted_at)) {
                 $existing_like->delete();
-                echo 'You dislike this ';
+                return $this->success('You dislike this');
             } else {
                 $existing_like->restore();
-                echo "You like this";
+                return $this->success('You like this');
             }
         }
     }
